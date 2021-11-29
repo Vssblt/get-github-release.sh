@@ -12,9 +12,9 @@ xargs=$(which gxargs || which xargs)
 # Validate settings.
 [ -f ~/.secrets ] && source ~/.secrets
 [ "$GITHUB_API_TOKEN" ] || { echo "Error: Please define GITHUB_API_TOKEN variable." >&2; exit 1; }
-[ $# -ne 2 ] && { echo "Usage: $0 [owner] [repo]"; exit 1; }
+[ $# -ne 3 ] && { echo "Usage: $0 [owner] [repo] [filename]"; exit 1; }
 [ "$TRACE" ] && set -x
-read owner repo <<<$@
+read owner repo name <<<$@
 
 # Define variables.
 GH_API="https://api.github.com"
@@ -23,7 +23,6 @@ GH_TAGS="$GH_REPO/releases/latest"
 AUTH="Authorization: token $GITHUB_API_TOKEN"
 WGET_ARGS="--content-disposition --auth-no-challenge --no-cookie"
 CURL_ARGS="-LJO#"
-name=MedicalImagingViewer
 
 # Validate token.
 curl -o /dev/null -sH "$AUTH" $GH_REPO || { echo "Error: Invalid repo, token or network issue!";  exit 1; }
